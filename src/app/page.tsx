@@ -2,7 +2,7 @@ import { redirect } from "next/navigation"
 
 
 export default function HomePage() {
-  redirect('/dashboard/counter');
+  redirect('/dashboard/main');
   //Nunca se va a ejecutar
   return (
     <>

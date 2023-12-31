@@ -4,7 +4,7 @@ import { useState } from 'react'
 interface Props {
   value?:number,
 }
-const CardCounter = ({value: valueProps = 0}:Props) => {
+export const CardCounter = ({value: valueProps = 0}:Props) => {
     const [value, setvalue] = useState(valueProps)
     const [text, setText] = useState('Products in cart')
   const susOne= ()=>{
@@ -33,4 +33,3 @@ const CardCounter = ({value: valueProps = 0}:Props) => {
   )
 }
 
-export default CardCounter
