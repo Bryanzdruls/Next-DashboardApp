@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const SideBarMenuItem = ({path,icon,title,subTitle}:Props) => {
-    const pathName =usePathname()
+    const pathName = usePathname()
   return (
     <Link
       href={path}

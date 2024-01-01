@@ -1,22 +1,28 @@
-import { Pokemon } from "@/pokemons";
 import { Metadata } from "next";
-import Image from "next/image";
 import { notFound } from "next/navigation";
+import Image from "next/image";
+
+import { Pokemon, PokemonsResponse } from "@/pokemons";
 
 interface Props {
-    params: {id:string};
+    params: {name:string};
 }
 //! En buil time solamente se ejecuta
 export async function generateStaticParams(){
-  const static151Pokemons = Array.from({ length: 151 }).map( (v, i) => `${i + 1}` );
-
-  return static151Pokemons.map( id => ({
-    id: id
-  }));
+  const data:PokemonsResponse = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=151`)
+    .then(res => res.json());
+  const pokemons = data.results.map(pokemon => ({
+    name: pokemon.name
+  }))
+  
+  return pokemons.map(({name}) =>({
+    name: name,
+  }))
 }
+
 export async function generateMetadata({params}:Props):Promise<Metadata>{
   try { 
-    const {id,name} = await getPokemon(params.id);
+    const {id,name} = await getPokemon(params.name);
     return{ 
         title:`#${id} - ${name}`,
         description:'Pokemon page '+id,
@@ -29,27 +35,25 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
   }
 }
 
-const getPokemon = async(id: string):Promise<Pokemon> =>{
+const getPokemon = async(name: string):Promise<Pokemon> =>{
 
   try {
-    const pokemon: Pokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`,{
+    const pokemon: Pokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`,{
         cache: 'force-cache',
         /* next: {
             revalidate:60 * 60 *30 * 6
         } */
     }).then( resp => resp.json());
-    
-    return pokemon
+    return pokemon;
   } catch (error) {
     notFound();
   }
-  
 }
 
 
 export default async function PokemonPage({ params }: Props) {
 
-    const pokemon = await getPokemon(params.id);
+    const pokemon = await getPokemon(params.name);
     
   
     return (
@@ -123,29 +127,23 @@ export default async function PokemonPage({ params }: Props) {
   
             <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4  drop-shadow-lg">
               <p className="text-sm text-gray-600">Shiny Sprites</p>
-              <div className="flex justify-center">
-  
+              <div className="flex justify-center"> 
                 <Image
                   src={pokemon.sprites.front_shiny}
                   width={100}
                   height={100}
                   alt={`sprite ${pokemon.name}`}
-                />
-  
+                />  
                 <Image
                   src={pokemon.sprites.back_shiny}
                   width={100}
                   height={100}
                   alt={`sprite ${pokemon.name}`}
-                />
-  
+                /> 
               </div>
             </div>
-  
-  
-  
           </div>
         </div>
       </div>
     );
-  }
+}
