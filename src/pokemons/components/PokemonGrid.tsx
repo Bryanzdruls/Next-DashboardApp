@@ -11,7 +11,7 @@ export default function PokemonGrid({pokemons}:Props) {
             {
                 pokemons.map((pokemon) => (
                     <PokemonCard key={pokemon.id} pokemon={pokemon}/>
-                    )) 
+                )) 
             }
     </div>
   );

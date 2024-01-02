@@ -1,5 +1,4 @@
-import { PokemonsResponse, SimplePokemon } from "@/pokemons";
-import PokemonGrid from "@/pokemons/components/PokemonGrid";
+import PokemonComponentPage from "@/pokemons/components/PokemonComponent";
 import { Metadata } from "next";
 
 export const metadata: Metadata ={
@@ -8,11 +7,12 @@ export const metadata: Metadata ={
 }
 
 export default async function PokemonsPage() {
-
+    
   return (
     <div className="flex flex-col">
-        <span className="text-5xl my-2"><small className="text-blue-500">Favorites </small>Pokemons</span>
-        <PokemonGrid pokemons={[]}/>
+      <span className="text-5xl my-2"><small className="text-blue-500">Favorites </small>Pokemons</span>
+      <PokemonComponentPage/>        
     </div>
   );
 }
+
